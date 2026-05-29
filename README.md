@@ -110,6 +110,10 @@ Covered logic:
 
 See [docs/API.md](docs/API.md) for the route map across auth, dashboard, donors, requests, inventory, appointments, donations, and admin operations.
 
+## Architecture Documentation
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for runtime flow, data model, and service boundary diagrams.
+
 ## Screenshots
 
 Add screenshots here after deployment:
