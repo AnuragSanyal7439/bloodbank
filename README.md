@@ -115,14 +115,16 @@ For a simple demo deployment:
 1. Set a strong `SECRET_KEY`.
 2. Use a persistent database path.
 3. Install dependencies with `pip install -r requirements.txt`.
-4. Run with a production WSGI server such as Gunicorn or Waitress.
+4. Run with a production WSGI server such as Waitress.
 5. Serve behind HTTPS.
 
-Example local production-style command after installing a WSGI server:
+Example local production-style command:
 
 ```powershell
-python app.py
+waitress-serve --listen=0.0.0.0:5000 wsgi:app
 ```
+
+This repo also includes `Procfile` and `render.yaml` for deployment-friendly hosting.
 
 ## Future Scope
 
@@ -132,4 +134,3 @@ python app.py
 - PDF reports and printable donation certificates.
 - More granular audit export and role permissions.
 - Full CSRF protection for public deployments.
-

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: bloodbank
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: waitress-serve --listen=0.0.0.0:$PORT wsgi:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /tmp/bloodbank.sqlite
+      - key: DONATION_COOLDOWN_DAYS
+        value: "90"
+      - key: DEFAULT_LOW_STOCK_THRESHOLD
+        value: "5"
