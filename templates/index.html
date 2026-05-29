@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Smart real-time blood bank management platform demo.">
+    <title>BloodBank | Smart Blood Availability Platform</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <div id="toast-root" class="toast-root" aria-live="polite"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#landing" aria-label="BloodBank home">
+        <span class="brand-mark">B+</span>
+        <span>
+          <strong>BloodBank</strong>
+          <small>Smart donation network</small>
+        </span>
+      </a>
+      <nav class="nav" id="main-nav" aria-label="Main navigation">
+        <button class="nav-link" data-view="landing"><i data-lucide="home"></i><span>Home</span></button>
+        <button class="nav-link app-only" data-view="dashboard"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></button>
+        <button class="nav-link app-only" data-view="requests"><i data-lucide="droplets"></i><span>Requests</span></button>
+        <button class="nav-link app-only admin-hospital" data-view="donors"><i data-lucide="users"></i><span>Donors</span></button>
+        <button class="nav-link app-only" data-view="inventory"><i data-lucide="package-check"></i><span>Inventory</span></button>
+        <button class="nav-link app-only" data-view="appointments"><i data-lucide="calendar-days"></i><span>Appointments</span></button>
+        <button class="nav-link app-only admin-only" data-view="analytics"><i data-lucide="chart-no-axes-combined"></i><span>Analytics</span></button>
+        <button class="nav-link app-only admin-only" data-view="admin"><i data-lucide="shield-check"></i><span>Admin</span></button>
+      </nav>
+      <div class="topbar-actions">
+        <button class="icon-btn app-only" id="refresh-btn" type="button" title="Refresh data"><i data-lucide="refresh-cw"></i></button>
+        <button class="secondary-btn app-only" id="logout-btn" type="button"><i data-lucide="log-out"></i><span>Logout</span></button>
+        <button class="primary-btn public-only" data-scroll-target="auth-section" type="button"><i data-lucide="log-in"></i><span>Login</span></button>
+      </div>
+    </header>
+
+    <main>
+      <section id="landing-view" class="view active">
+        <section class="hero">
+          <div class="hero-overlay"></div>
+          <div class="hero-content">
+            <p class="eyebrow">Real-time blood availability demo</p>
+            <h1>BloodBank</h1>
+            <p class="hero-copy">Connect donors, hospitals, recipients, and blood bank teams through live inventory, urgent request handling, donor matching, and role-based operations.</p>
+            <div class="hero-actions">
+              <button class="primary-btn" data-scroll-target="request-preview"><i data-lucide="siren"></i><span>Emergency request</span></button>
+              <button class="ghost-btn" data-scroll-target="auth-section"><i data-lucide="heart-pulse"></i><span>Become a donor</span></button>
+            </div>
+          </div>
+          <div class="hero-live" id="landing-inventory-preview"></div>
+        </section>
+
+        <section id="request-preview" class="section-band urgent-band">
+          <div class="section-heading">
+            <span class="eyebrow">Emergency desk</span>
+            <h2>Critical requests stay visible until handled</h2>
+          </div>
+          <div id="landing-critical" class="horizontal-list"></div>
+        </section>
+
+        <section class="section-band">
+          <div class="section-heading">
+            <span class="eyebrow">How it works</span>
+            <h2>From request to fulfillment</h2>
+          </div>
+          <div class="steps-grid">
+            <article>
+              <i data-lucide="clipboard-plus"></i>
+              <h3>Create request</h3>
+              <p>Recipients or hospitals submit the needed group, units, location, urgency, and required time.</p>
+            </article>
+            <article>
+              <i data-lucide="radar"></i>
+              <h3>Match donors</h3>
+              <p>The platform ranks compatible donors by city, eligibility, availability, and recent activity.</p>
+            </article>
+            <article>
+              <i data-lucide="badge-check"></i>
+              <h3>Verify donation</h3>
+              <p>Admins verify donations and appointments before inventory is increased or reserved.</p>
+            </article>
+            <article>
+              <i data-lucide="truck"></i>
+              <h3>Fulfill safely</h3>
+              <p>Stock decreases only through approved request transitions and every admin action is audited.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-band split-section">
+          <div>
+            <span class="eyebrow">Features</span>
+            <h2>Built for portfolio-grade operations</h2>
+            <div class="feature-list">
+              <span><i data-lucide="lock-keyhole"></i> Secure sessions and protected roles</span>
+              <span><i data-lucide="activity"></i> SSE realtime updates with polling fallback</span>
+              <span><i data-lucide="bell-ring"></i> In-app alerts and external provider placeholders</span>
+              <span><i data-lucide="search"></i> Search, filters, sorting, and pagination-ready APIs</span>
+              <span><i data-lucide="history"></i> Audit logs for inventory, requests, and verification</span>
+            </div>
+          </div>
+          <div class="impact-panel">
+            <div><strong id="stat-donors">0</strong><span>registered donors</span></div>
+            <div><strong id="stat-requests">0</strong><span>blood requests</span></div>
+            <div><strong id="stat-critical">0</strong><span>critical pending</span></div>
+          </div>
+        </section>
+
+        <section class="section-band testimonials">
+          <div class="section-heading">
+            <span class="eyebrow">Impact</span>
+            <h2>Designed for quick demos and serious evaluation</h2>
+          </div>
+          <div class="quote-grid">
+            <blockquote>“The live stock view makes emergency triage easy to understand in seconds.”<cite>Hospital coordinator</cite></blockquote>
+            <blockquote>“Role-based dashboards help reviewers see donor, hospital, and admin workflows clearly.”<cite>Placement mentor</cite></blockquote>
+            <blockquote>“The audit trail and matching rules make it feel like a complete system.”<cite>Hackathon judge</cite></blockquote>
+          </div>
+        </section>
+
+        <section id="auth-section" class="section-band auth-band">
+          <div class="section-heading">
+            <span class="eyebrow">Demo access</span>
+            <h2>Login or create a public account</h2>
+          </div>
+          <div class="auth-grid">
+            <form id="login-form" class="form-panel">
+              <h3>Login</h3>
+              <label>Email<input name="email" type="email" value="admin@bloodbank.demo" required></label>
+              <label>Password<input name="password" type="password" value="Admin@123" required></label>
+              <button class="primary-btn" type="submit"><i data-lucide="log-in"></i><span>Login</span></button>
+              <div class="quick-logins">
+                <button type="button" data-demo-login="donor">Donor</button>
+                <button type="button" data-demo-login="hospital">Hospital</button>
+                <button type="button" data-demo-login="admin">Admin</button>
+              </div>
+            </form>
+
+            <form id="register-form" class="form-panel">
+              <h3>Register</h3>
+              <div class="form-grid two">
+                <label>Name<input name="name" required></label>
+                <label>Email<input name="email" type="email" required></label>
+                <label>Password<input name="password" type="password" minlength="8" required></label>
+                <label>Role
+                  <select name="role">
+                    <option value="donor">Donor</option>
+                    <option value="recipient">Recipient</option>
+                    <option value="hospital">Hospital</option>
+                  </select>
+                </label>
+                <label>Phone<input name="phone"></label>
+                <label>City<input name="city" required></label>
+                <label class="donor-field">Age<input name="age" type="number" min="18" max="65" value="25"></label>
+                <label class="donor-field">Blood group
+                  <select name="blood_group">
+                    <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+                  </select>
+                </label>
+              </div>
+              <button class="secondary-btn" type="submit"><i data-lucide="user-plus"></i><span>Create account</span></button>
+            </form>
+          </div>
+        </section>
+      </section>
+
+      <section id="app-shell" class="app-shell" hidden>
+        <section id="dashboard-view" class="view app-view active">
+          <div class="page-heading">
+            <div>
+              <span class="eyebrow" id="role-eyebrow">Dashboard</span>
+              <h2 id="welcome-title">Welcome</h2>
+            </div>
+            <div class="status-pill" id="realtime-status"><i data-lucide="wifi"></i><span>Realtime active</span></div>
+          </div>
+          <div class="metric-grid" id="metric-grid"></div>
+          <div id="role-dashboard-panel"></div>
+          <div class="dashboard-grid">
+            <section class="panel emergency-panel">
+              <div class="panel-title"><h3>Emergency alerts</h3><span id="critical-count-pill"></span></div>
+              <div id="critical-list" class="stack-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-title"><h3>Low stock</h3><span>threshold aware</span></div>
+              <div id="low-stock-list" class="stack-list"></div>
+            </section>
+            <section class="panel wide">
+              <div class="panel-title"><h3>Blood stock by group</h3><span>live inventory</span></div>
+              <canvas id="stock-chart" height="120"></canvas>
+            </section>
+            <section class="panel">
+              <div class="panel-title"><h3>Notifications</h3><span>in-app</span></div>
+              <div id="notification-list" class="stack-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="requests-view" class="view app-view">
+          <div class="page-heading">
+            <div><span class="eyebrow">Blood requests</span><h2>Create, match, approve, and fulfill</h2></div>
+          </div>
+          <div class="work-grid">
+            <form id="request-form" class="form-panel">
+              <h3>New request</h3>
+              <div class="form-grid two">
+                <label>Patient name<input name="patient_name" required></label>
+                <label>Blood group<select name="blood_group" required></select></label>
+                <label>Units required<input name="units_required" type="number" min="1" value="1" required></label>
+                <label>Hospital name<input name="hospital_name" required></label>
+                <label>City<input name="city" required></label>
+                <label>Urgency<select name="urgency"><option>Normal</option><option>Urgent</option><option>Critical</option></select></label>
+                <label>Required date/time<input name="required_at" type="datetime-local" required></label>
+                <label>Contact details<input name="contact_details" required></label>
+              </div>
+              <button class="primary-btn" type="submit"><i data-lucide="send"></i><span>Submit request</span></button>
+            </form>
+            <section class="panel">
+              <div class="panel-title"><h3>Filters</h3><span id="request-total"></span></div>
+              <div class="filter-row">
+                <select id="filter-request-status"><option value="">All statuses</option><option>Pending</option><option>Matched</option><option>Fulfilled</option><option>Cancelled</option></select>
+                <select id="filter-request-urgency"><option value="">All urgency</option><option>Normal</option><option>Urgent</option><option>Critical</option></select>
+                <select id="filter-request-blood"><option value="">All groups</option></select>
+                <select id="sort-request"><option value="newest">Newest</option><option value="urgency">Urgency</option><option value="location">Location</option><option value="status">Status</option></select>
+              </div>
+              <div id="request-list" class="stack-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="donors-view" class="view app-view">
+          <div class="page-heading">
+            <div><span class="eyebrow">Donor network</span><h2>Search eligibility and availability</h2></div>
+          </div>
+          <div id="donor-self-panel" class="panel donor-self" hidden></div>
+          <section class="panel">
+            <div class="panel-title"><h3>Donors</h3><span id="donor-total"></span></div>
+            <div class="filter-row">
+              <input id="filter-donor-search" placeholder="Search name, phone, email">
+              <input id="filter-donor-city" placeholder="City">
+              <select id="filter-donor-blood"><option value="">All groups</option></select>
+              <select id="sort-donor"><option value="newest">Newest</option><option value="city">City</option><option value="blood_group">Blood group</option><option value="eligible">Eligibility</option></select>
+            </div>
+            <div id="donor-list" class="table-wrap"></div>
+          </section>
+        </section>
+
+        <section id="inventory-view" class="view app-view">
+          <div class="page-heading">
+            <div><span class="eyebrow">Inventory</span><h2>Track available, reserved, expired units</h2></div>
+          </div>
+          <section class="panel">
+            <div class="panel-title"><h3>Inventory controls</h3><span>expiry synced on load</span></div>
+            <div id="inventory-grid" class="inventory-grid"></div>
+          </section>
+        </section>
+
+        <section id="appointments-view" class="view app-view">
+          <div class="page-heading">
+            <div><span class="eyebrow">Appointments</span><h2>Donation scheduling</h2></div>
+          </div>
+          <div class="work-grid">
+            <form id="appointment-form" class="form-panel donor-only">
+              <h3>Book appointment</h3>
+              <label>Blood bank center<input name="center" value="Pune Central Blood Bank" required></label>
+              <label>Date/time<input name="appointment_at" type="datetime-local" required></label>
+              <label>Notes<input name="notes"></label>
+              <button class="primary-btn" type="submit"><i data-lucide="calendar-plus"></i><span>Book</span></button>
+            </form>
+            <section class="panel">
+              <div class="panel-title"><h3>Appointment list</h3><span>admin actionable</span></div>
+              <div id="appointment-list" class="stack-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="analytics-view" class="view app-view">
+          <div class="page-heading">
+            <div><span class="eyebrow">Analytics</span><h2>Operational trends</h2></div>
+          </div>
+          <div class="analytics-grid">
+            <section class="panel"><h3>Monthly donations</h3><canvas id="donation-chart" height="130"></canvas></section>
+            <section class="panel"><h3>Monthly requests</h3><canvas id="request-chart" height="130"></canvas></section>
+            <section class="panel"><h3>Urgency distribution</h3><canvas id="urgency-chart" height="130"></canvas></section>
+            <section class="panel"><h3>City-wise donor count</h3><canvas id="city-chart" height="130"></canvas></section>
+          </div>
+        </section>
+
+        <section id="admin-view" class="view app-view">
+          <div class="page-heading">
+            <div><span class="eyebrow">Admin operations</span><h2>Users, donations, and audit trail</h2></div>
+          </div>
+          <div class="admin-grid">
+            <section class="panel"><div class="panel-title"><h3>Donation verification</h3><span>pending first</span></div><div id="donation-list" class="stack-list"></div></section>
+            <section class="panel"><div class="panel-title"><h3>User management</h3><span>super admin can edit</span></div><div id="user-list" class="table-wrap"></div></section>
+            <section class="panel wide"><div class="panel-title"><h3>Audit logs</h3><span>latest 100</span></div><div id="audit-list" class="table-wrap"></div></section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <strong>BloodBank</strong>
+      <span>This academic demo is not a certified medical system. Real blood banking requires verified clinical workflows, licensed staff, regulatory compliance, and secure integrations.</span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  </body>
+</html>

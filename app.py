@@ -1,11 +1,12 @@
 import os
 
-from app import app
+from bloodbank import create_app
+
+
+app = create_app()
 
 
 if __name__ == "__main__":
-    print("BloodBank has been upgraded to a Flask web platform.")
-    print("Open http://127.0.0.1:5000 after the server starts.")
     app.run(
         debug=os.getenv("FLASK_DEBUG", "0") == "1",
         host=os.getenv("HOST", "127.0.0.1"),
