@@ -1,0 +1,12 @@
+.git
+.github
+.venv
+venv
+__pycache__
+*.pyc
+.env
+instance
+*.log
+screenshots
+PPS Mini Project-Report-Template[1].docx
+

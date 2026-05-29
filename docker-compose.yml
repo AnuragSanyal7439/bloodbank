@@ -1,0 +1,16 @@
+services:
+  bloodbank:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      SECRET_KEY: local-docker-demo-secret
+      DATABASE_PATH: /data/bloodbank.sqlite
+      DONATION_COOLDOWN_DAYS: "90"
+      DEFAULT_LOW_STOCK_THRESHOLD: "5"
+    volumes:
+      - bloodbank-data:/data
+
+volumes:
+  bloodbank-data:
+

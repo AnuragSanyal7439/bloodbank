@@ -62,6 +62,14 @@ Open `http://127.0.0.1:5000`.
 
 The SQLite database is created automatically at `instance/bloodbank.sqlite` with active demo data. To reset the demo, stop the server, delete that file, and run `python app.py` again.
 
+## Docker
+
+```powershell
+docker compose up --build
+```
+
+Open `http://127.0.0.1:5000`. The compose setup stores SQLite data in a named Docker volume.
+
 ## Demo Credentials
 
 | Role | Email | Password |
