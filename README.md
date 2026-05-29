@@ -62,6 +62,12 @@ Open `http://127.0.0.1:5000`.
 
 The SQLite database is created automatically at `instance/bloodbank.sqlite` with active demo data. To reset the demo, stop the server, delete that file, and run `python app.py` again.
 
+You can also reset the seeded demo database with:
+
+```powershell
+python scripts/reset_demo_db.py
+```
+
 ## Docker
 
 ```powershell
