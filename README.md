@@ -98,6 +98,10 @@ Covered logic:
 - Inventory reserve, release, and fulfillment rules
 - Request status transitions
 
+## API Documentation
+
+See [docs/API.md](docs/API.md) for the route map across auth, dashboard, donors, requests, inventory, appointments, donations, and admin operations.
+
 ## Screenshots
 
 Add screenshots here after deployment:
