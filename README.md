@@ -138,3 +138,7 @@ This repo also includes `Procfile` and `render.yaml` for deployment-friendly hos
 - PDF reports and printable donation certificates.
 - More granular audit export and role permissions.
 - Full CSRF protection for public deployments.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, test expectations, branch naming, and pull request guidance.
