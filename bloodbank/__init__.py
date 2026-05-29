@@ -24,6 +24,7 @@ def create_app(config_object=Config) -> Flask:
     from .routes.dashboard import bp as dashboard_bp
     from .routes.donations import bp as donations_bp
     from .routes.donors import bp as donors_bp
+    from .routes.health import bp as health_bp
     from .routes.inventory import bp as inventory_bp
     from .routes.notifications import bp as notifications_bp
     from .routes.requests import bp as requests_bp
@@ -37,6 +38,7 @@ def create_app(config_object=Config) -> Flask:
     app.register_blueprint(donations_bp)
     app.register_blueprint(notifications_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(health_bp)
 
     @app.get("/")
     def index():
